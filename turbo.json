@@ -1,14 +1,18 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".svelte-kit/**", ".vercel/**"]
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["app/**/build", "packages/**/build"]
+		},
+		"watch": {
+			"dependsOn": ["^build"],
+			"cache": false
     },
-    "lint": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
+		"dev": {
+			"dependsOn": ["^build"],
+			"cache": false
     }
-  }
+	},
+	"globalDependencies": [".env"]
 }

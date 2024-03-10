@@ -1,0 +1,21 @@
+{
+	"name": "@valet/provider-injection",
+	"version": "0.1.0",
+	"module": "dist/esm/index.js",
+	"scripts": {
+		"build": "node build.js; cp ./dist/browser/index.js ../../apps/extension/public/injected.js",
+		"dev": "node build.js; cp ./dist/browser/index.js ../../apps/extension/public/injected.js; cp ./dist/browser/index.js.map ../../apps/extension/public/injected.js.map",
+		"build:ts": "tsc"
+	},
+	"dependencies": {
+		"@valet/lib": "workspace:*",
+		"@valet/provider": "workspace:*",
+		"@valet/wallet-standard": "workspace:*"
+	},
+	"devDependencies": {
+		"esbuild": "^0.19.10",
+		"esbuild-node-builtins": "^0.1.0",
+		"node-stdlib-browser": "^1.2.0",
+		"typescript": "~4.9.3"
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"name": "Valet",
+	"description": "Valet chrome extension wallet for Solana blockchain",
+	"version": "0.0.1",
+	"manifest_version": 3,
+	"icons": {
+		"32": "valet-logo-white.png"
+	},
+	"action": {
+		"default_popup": "src/index.html",
+		"default_icon": "valet-logo-white.png",
+		"default_title": "valet-extension"
+	},
+	"background": {
+		"service_worker": "src/background/index.ts",
+		"type": "module"
+	},
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"js": ["src/content-script/index.ts"],
+			"run_at": "document_start",
+			"all_frames": true
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["injected.js"],
+			"matches": ["<all_urls>"]
+		}
+	],
+	"permissions": ["alarms", "storage", "background", "identity", "tabs"],
+	"host_permissions": ["<all_urls>"]
+}

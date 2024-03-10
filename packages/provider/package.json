@@ -1,0 +1,21 @@
+{
+  "name": "@valet/provider",
+  "version": "0.1.0",
+  "module": "dist/esm/index.js",
+  "source": "src/index.ts",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --cache",
+    "lint:fix": "yarn run lint --fix"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.63.1",
+    "@valet/lib": "workspace:*",
+    "bs58": "^5.0.0",
+    "eventemitter3": "^4.0.7"
+  },
+  "devDependencies": {
+    "typescript": "~4.9.3"
+  }
+}

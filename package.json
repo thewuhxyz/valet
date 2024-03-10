@@ -1,17 +1,25 @@
 {
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "prettier": "^3.1.1",
-    "turbo": "latest"
-  },
-  "packageManager": "pnpm@8.9.0",
-  "engines": {
-    "node": ">=18"
-  }
+	"name": "valet",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"dev": "turbo dev",
+		"shadcn-add:ext": "pnpm exec shadcn-svelte@latest add",
+		"dev:ext": "pnpm build:prov-injection; turbo run dev --filter='extension'",
+		"dev:watch": "turbo run watch --filter='extension'",
+		"build:ext": "turbo build --filter='extension'",
+		"build:prov-injection": "pnpm build --filter='provider-injection'"
+	},
+	"devDependencies": {
+		"prettier": "^3.1.0",
+		"turbo": "latest"
+	},
+	"packageManager": "pnpm@8.9.0",
+	"engines": {
+		"node": ">=18"
+	},
+	"resolutions": {
+		"@types/node": "20.10.8",
+		"@solana/web3.js": "1.88.0"
+	}
 }

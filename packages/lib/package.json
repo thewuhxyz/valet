@@ -1,0 +1,44 @@
+{
+	"name": "@valet/lib",
+	"version": "0.1.0",
+	"module": "dist/esm/index.js",
+	"source": "src/index.ts",
+	"types": "dist/esm/index.d.ts",
+	"scripts": {
+		"build": "tsc"
+	},
+	"dependencies": {
+		"@coral-xyz/anchor": "^0.29.0",
+		"@coral-xyz/spl-token": "^0.29.0",
+		"@metaplex-foundation/beet": "^0.7.2",
+		"@metaplex-foundation/mpl-token-metadata": "^2.7.0",
+		"@project-serum/anchor": "^0.26.0",
+		"@project-serum/token": "^0.1.0",
+		"@solana/buffer-layout": "^4.0.1",
+		"@solana/spl-token": "^0.3.9",
+		"@solana/spl-token-registry": "^0.2.4574",
+		"@solana/wallet-standard-features": "^1.1.0",
+		"@solana/wallet-standard-util": "^1.1.1",
+		"@solana/web3.js": "^1.87.6",
+		"@supabase/supabase-js": "^2.39.2",
+		"bip32": "^4.0.0",
+		"bip32-path": "^0.4.2",
+		"bip39": "^3.1.0",
+		"bs58": "^5.0.0",
+		"ed25519-hd-key": "^1.3.0",
+		"eventemitter3": "^4.0.7",
+		"tweetnacl": "^1.0.3",
+		"uuid": "^9.0.1"
+	},
+	"devDependencies": {
+		"@types/bn.js": "^5.1.5",
+		"@types/chrome": "^0.0.254",
+		"@types/node": "^20.10.4",
+		"bn.js": "^5.2.1",
+		"supabase": "^1.131.3",
+		"typescript": "~4.9.3"
+	},
+	"peerDependencies": {
+		"@metaplex-foundation/umi": "^0.8.2"
+	}
+}
