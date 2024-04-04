@@ -1,5 +1,4 @@
-import type { TokenInfo } from "@solana/spl-token-registry";
-import type { HeliusParsedTransaction, TokenAccountWithKey } from "./types";
+import type { HeliusParsedTransaction } from "./types";
 
 export const truncate = (str: string, len: number = 10) => {
 	return str.length > len

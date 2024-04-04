@@ -1,5 +1,5 @@
 function log(str: any, ...args: any) {
-	console.log(`valet: ${str}`, ...args);
+	console.log(`anchor: ${str}`, ...args);
 }
 
 function debug(str: any, ...args: any) {

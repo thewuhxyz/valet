@@ -1,12 +1,12 @@
 <script lang=ts>
 	import Separator from "../ui/separator/separator.svelte";
 
-	let className = ""
+	let twClass = ""
 	export let separator = true;
-	export  { className as class }
+	export  { twClass as class }
 </script>
 
-<div class={`pb-2 w-full flex flex-col items-center ${className}`}>
+<div class={`pb-2 w-full flex flex-col items-center ${twClass}`}>
 	<Separator class={`${separator ? "" : "hidden"} m-1 bg-primary`} />
 	<slot />
 </div>

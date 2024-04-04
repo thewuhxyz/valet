@@ -2,8 +2,8 @@ import {
 	NOTIFICATION_KEYRING_STORE_CREATED,
 	NOTIFICATION_KEYRING_STORE_LOCKED,
 	NOTIFICATION_KEYRING_STORE_UNLOCKED,
+	getLogger,
 	type Notification,
-	KeyringStoreState,
 	NOTIFICATION_SIGNIN_SUCCESSFUL,
 	NOTIFICATION_SOLANA_SPL_TOKENS_DID_UPDATE,
 	NOTIFICATION_ACTIVE_WALLET_UPDATED,
@@ -11,25 +11,16 @@ import {
 	NOTIFICATION_KEYRING_STORE_RESET,
 	NOTIFICATION_APPROVED_ORIGINS_UPDATE,
 	NOTIFICATION_SIGNOUT_SUCCESSFUL,
-	getLogger,
+	NOTIFICATION_DELEGATE_WALLET_UPDATED,
 } from "@valet/lib";
-import {
-	approvedOriginStore,
-	initializeAndSetWalletStore,
-	keyringStoreState,
-	setActiveWalletAndRefreshTokens,
-} from "./stores/state-store";
-import { initializeAndSetUserStore, userStore } from "./stores/user-store";
-import {
-	initializeAndSetMnemonicStore,
-	mnemonicStore,
-} from "./stores/mnemonic-store";
-import { updateTokensAndMetadata } from "./stores/token";
+import { KeyringStoreState } from "@valet/background";
+import { walletStore } from "./stores";
 
-const logger = getLogger("extension");
+const logger = getLogger("notifications-provider");
 
 export const notificationsHandler = async (notif: Notification) => {
-	logger.debug(`received notification: ${notif.name}`, notif);
+	logger.debug(`received notification ${notif.name}`, notif);
+
 	switch (notif.name) {
 		case NOTIFICATION_KEYRING_STORE_CREATED:
 			await handleKeyringStoreCreated(notif);
@@ -43,7 +34,7 @@ export const notificationsHandler = async (notif: Notification) => {
 			await handleSigninSuccessful();
 			break;
 		case NOTIFICATION_SIGNOUT_SUCCESSFUL:
-			await handleSignoutSuccessful();
+			await handleSignoutSuccessful(notif);
 			break;
 		case NOTIFICATION_SOLANA_SPL_TOKENS_DID_UPDATE:
 			await handleSolanaSplTokensDidUpdate(notif);
@@ -53,6 +44,9 @@ export const notificationsHandler = async (notif: Notification) => {
 			break;
 		case NOTIFICATION_ACTIVE_WALLET_UPDATED:
 			handleActiveWalletUpdated(notif);
+			break;
+		case NOTIFICATION_DELEGATE_WALLET_UPDATED:
+			handleDelegateWalletUpdated(notif);
 			break;
 		case NOTIFICATION_KEYRING_STORE_RESET:
 			handleReset();
@@ -66,47 +60,50 @@ export const notificationsHandler = async (notif: Notification) => {
 };
 
 const handleKeyringStoreCreated = async (notif: Notification) => {
-	await setActiveWalletAndRefreshTokens(notif.data.activeWallet);
-	await initializeAndSetWalletStore();
-	keyringStoreState.set(KeyringStoreState.Unlocked);
+	walletStore.allWallets.init();
+	walletStore.updateActiveWallet(notif.data.activeWallet);
+	walletStore.state.set(KeyringStoreState.Unlocked);
 };
 
 const handleKeyringStoreLocked = () => {
-	keyringStoreState.set(KeyringStoreState.Locked);
+	walletStore.state.set(KeyringStoreState.Locked);
 };
 
 const handleKeyringStoreUnlocked = async (notif: Notification) => {
-	await setActiveWalletAndRefreshTokens(notif.data.activeWallet);
-	await initializeAndSetWalletStore();
-	keyringStoreState.set(KeyringStoreState.Unlocked);
-};
-const handleSigninSuccessful = async () => {
-	await initializeAndSetUserStore();
-	await initializeAndSetMnemonicStore();
+	walletStore.allWallets.init();
+	walletStore.updateActiveWallet(notif.data.activeWallet);
+	walletStore.delegate.set(notif.data.delegateWallet)
+	walletStore.state.set(KeyringStoreState.Unlocked);
 };
 
-const handleSignoutSuccessful = async () => {
-	userStore.set(undefined);
-	mnemonicStore.set(undefined);
-	keyringStoreState.set(KeyringStoreState.NeedsOnboarding);
+const handleSigninSuccessful = async () => {
+	walletStore.init();
+};
+
+const handleSignoutSuccessful = async (notif: Notification) => {
+	walletStore.init();
 };
 
 const handleSolanaSplTokensDidUpdate = async (notif: Notification) => {
-	await updateTokensAndMetadata(notif.data.customSplTokenAccounts);
+	walletStore.tokens.updateTokens(notif.data.customSplTokenAccounts);
 };
 
 const handleActiveWalletUpdated = async (notif: Notification) => {
-	await setActiveWalletAndRefreshTokens(notif.data.activeWallet);
+	walletStore.updateActiveWallet(notif.data.activeWallet);
 };
 
+const handleDelegateWalletUpdated = async(notif: Notification) => {
+	walletStore.delegate.set(notif.data.delegateWallet)
+}
+
 const handleReset = () => {
-	keyringStoreState.set(KeyringStoreState.NeedsOnboarding);
+	walletStore.state.set(KeyringStoreState.NeedsOnboarding);
 };
 
 const handleApprovedOriginsUpdate = (notif: Notification) => {
-	approvedOriginStore.set(notif.data.approvedOrigins);
+	// approvedOriginStore.set(notif.data.approvedOrigins);
 };
 
 const handleKeyringDerivedWallet = async () => {
-	await initializeAndSetWalletStore();
+	// await initializeAndSetWalletStore();
 };

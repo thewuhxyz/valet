@@ -1,25 +1,22 @@
 <script lang="ts">
-	import { buttonVariants } from "$lib/components/ui/button";
 	import Button from "$lib/components/ui/button/button.svelte";
-	import type { TokenDataWithPrice } from "$lib/types";
-	import { Cross1 } from "radix-icons-svelte";
-	import { link } from "svelte-spa-router";
+	import { TitleBar, getActiveWallet } from "@valet/ui";
+	import { ArrowLeft } from "radix-icons-svelte";
+	import { pop } from "svelte-spa-router";
 
-	export let token: TokenDataWithPrice;
+	export let tokenAddress: string;
+	$: ({ balances } = getActiveWallet());
+	$: token = $balances && $balances.get(tokenAddress);
 </script>
 
-<div class="flex items-center">
-	<a
-		class={buttonVariants({ variant: "ghost", size: "icon" })}
-		href="/"
-		use:link
-	>
-		<Cross1 />
-	</a>
-	<div class="flex-1 text-center">
-		<p class="text-lg">{token.ticker}</p>
-		<p class="">{token.name}</p>
+<TitleBar>
+	<div slot="left" class="">
+		<Button variant="ghost" size="icon" on:click={pop}>
+			<ArrowLeft />
+		</Button>
 	</div>
-	<!-- This is for visual balance. Doesn't do anything  -->
-	<Button variant="ghost" class="collapse" size="icon" />
-</div>
+	<div slot="main" class="flex-1 text-center">
+		<p class="text-lg">{token ? token.ticker : "..."}</p>
+		<p class="">{token ? token.name : ""}</p>
+	</div>
+</TitleBar>

@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"manifest_version": 3,
 	"icons": {
-		"32": "valet-logo-white.png"
+		"32": "favicon.png"
 	},
 	"action": {
 		"default_popup": "src/index.html",

@@ -1,3 +1,3 @@
-import { startBackgroundService } from "@valet/lib";
+import { startBackgroundService } from "@valet/background";
 
 const _handle = startBackgroundService();

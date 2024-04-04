@@ -1,0 +1,19 @@
+{
+	"name": "@valet/ota",
+	"version": "0.1.0",
+	"module": "dist/esm/index.js",
+	"source": "src/index.ts",
+	"types": "dist/esm/index.d.ts",
+	"exports": {
+		".": "./dist/esm/index.js"
+	},
+	"scripts": {
+		"build": "tsc"
+	},
+	"dependencies": {
+		"@valet/ota-client": "workspace:^"
+	},
+	"devDependencies": {
+		"typescript": "~4.9.3"
+	}
+}

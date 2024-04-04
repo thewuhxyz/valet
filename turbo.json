@@ -3,16 +3,31 @@
 	"pipeline": {
 		"build": {
 			"dependsOn": ["^build"],
-			"outputs": ["app/**/build", "packages/**/build"]
+			"outputs": [
+				"app/**/build",
+				"examples/**/build",
+				"packages/**/build",
+				"protocol/build"
+			]
 		},
 		"watch": {
 			"dependsOn": ["^build"],
 			"cache": false
-    },
+		},
+		"anchor-test": {
+			"cache": false
+		},
+		"shadcn-add": {
+			"cache": false
+		},
+		"supabase-typegen": {
+			"cache": false
+		},
 		"dev": {
 			"dependsOn": ["^build"],
 			"cache": false
-    }
+		}
 	},
+	"globalDotEnv": [".env"],
 	"globalDependencies": [".env"]
 }

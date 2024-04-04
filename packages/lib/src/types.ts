@@ -25,13 +25,14 @@ export type RpcRequest = {
 	params: any[];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export type RpcResponse<T = any> = any;
 export type ResponseHandler = [any, any];
 export type EventEmitter = any;
 export type Event = any;
 
 export type Sender = {
-	id: string;
+	id: string; // This is the extension id, if applicable.
 	url: string;
 
 	origin?: string;

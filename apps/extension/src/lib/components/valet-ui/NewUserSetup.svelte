@@ -1,58 +1,58 @@
 <script lang="ts">
-	import { link } from "svelte-spa-router";
-	import { buttonVariants } from "$lib/components/ui/button";
-	import Button from "$lib/components/ui/button/button.svelte";
-	import Input from "$lib/components/ui/input/input.svelte";
-	import ActionButtonArea from "$lib/components/valet-ui/ActionButtonArea.svelte";
-	import type { NewUserFormData } from "$lib/types";
+	import { link } from "svelte-spa-router"
+	import { buttonVariants } from "$lib/components/ui/button"
+	import Button from "$lib/components/ui/button/button.svelte"
+	import Input from "$lib/components/ui/input/input.svelte"
+	import ActionButtonArea from "$lib/components/valet-ui/ActionButtonArea.svelte"
+	import type { NewUserFormData } from "$lib/types"
+	import { getLogger } from "@valet/lib"
 
-	let steps = ["create-mnemonic", "create-password"];
-	let currentStep = 0;
-	let words: string[];
+	const logger = getLogger("new user form")
+
+	let steps = ["create-mnemonic", "create-password"]
+	let currentStep = 0
+	let words: string[]
 	let formData: NewUserFormData = {
 		password: "",
 		confirm: "",
 		mnemonic: "",
 		secret: "",
 		hint: "",
-	};
+	}
 
-	$: isFinalStep = currentStep === steps.length - 1;
-	$: isFirstStep = currentStep === 0;
+	$: isFinalStep = currentStep === steps.length - 1
+	$: isFirstStep = currentStep === 0
 	$: shouldGenerateMnemonic =
-		steps[currentStep] === "create-mnemonic" && !formData.mnemonic;
-	$: words = !formData.mnemonic ? [] : formData.mnemonic.split(" ");
-	$: formData;
+		steps[currentStep] === "create-mnemonic" && !formData.mnemonic
+	$: words = !formData.mnemonic ? [] : formData.mnemonic.split(" ")
+	$: formData
 
 	const nextStep = () => {
 		if (currentStep < steps.length - 1) {
-			currentStep = currentStep + 1;
+			currentStep = currentStep + 1
 		}
-	};
+	}
 	const previousStep = () => {
 		if (currentStep > 0) {
-			currentStep = currentStep - 1;
+			currentStep = currentStep - 1
 		}
-	};
+	}
 
 	const handleNext = async () => {
 		if (isFinalStep) {
-			await handleSubmit(formData.mnemonic, formData.password);
+			await handleSubmit(formData.mnemonic, formData.password)
 		} else if (shouldGenerateMnemonic) {
-			formData.mnemonic = await generateMnemonic();
+			formData.mnemonic = await generateMnemonic()
 		} else {
-			nextStep();
+			nextStep()
 		}
-	};
+	}
 
 	const handlePrev = () => {
-		previousStep();
-	};
-	export let generateMnemonic: () => Promise<string>;
-	export let handleSubmit: (
-		mnemonic: string,
-		password: string
-	) => Promise<void>;
+		previousStep()
+	}
+	export let generateMnemonic: () => Promise<string>
+	export let handleSubmit: (mnemonic: string, password: string) => Promise<void>
 </script>
 
 <form class="w-full px-4 flex flex-col items-center">

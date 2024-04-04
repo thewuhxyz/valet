@@ -4,11 +4,32 @@
 	"scripts": {
 		"build": "turbo build",
 		"dev": "turbo dev",
-		"shadcn-add:ext": "pnpm exec shadcn-svelte@latest add",
-		"dev:ext": "pnpm build:prov-injection; turbo run dev --filter='extension'",
-		"dev:watch": "turbo run watch --filter='extension'",
-		"build:ext": "turbo build --filter='extension'",
-		"build:prov-injection": "pnpm build --filter='provider-injection'"
+		"anchor:build": "anchor build -p valet_protocol",
+		"anchor:deploy": "anchor deploy -p valet_protocol",
+		"anchor:test": "turbo anchor-test --filter=protocol",
+		"app:dev": "turbo dev --filter=app",
+		"app:build": "turbo build --filter=app",
+		"demo:build": "turbo build --filter='demo'",
+		"demo:dev": "turbo dev --filter=demo",
+		"demo:shadcn-add": "pnpm -dir=$(pwd)/examples/demo shadcn-add",
+		"ext:build": "turbo build --filter='extension'",
+		"ext:dev": "pnpm prov-inj:build; turbo dev --filter='extension'",
+		"ext:shadcn-add": "pnpm -dir=$(pwd)/apps/extension shadcn-add",
+		"portal:dev": "turbo dev --filter='portal'",
+		"portal:shadcn-add": "pnpm -dir=$(pwd)/apps/portal shadcn-add",
+		"lib:build": "turbo build --filter=lib",
+		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
+		"lint": "turbo lint",
+		"ota:dev": "pnpm dev --filter='ota'",
+		"ota-server:dev": "pnpm dev --filter='ota-server'",
+		"ota-server:watch-ts": "turbo watch --filter='ota-server'",
+		"protocol:build": "pnpm build --filter=protocol",
+		"provider:build": "pnpm build --filter=provider",
+		"prov-inj:build": "pnpm build --filter='provider-injection'",
+		"supabase-typegen": "turbo supabase-typegen",
+		"supabase-typegen:all": "pnpm supabase-typegen --filter=portal --filter=background --filter=ota-server",
+		"ui:shadcn-add": "pnpm -dir=$(pwd)/packages/ui shadcn-add",
+		"watch": "turbo watch"
 	},
 	"devDependencies": {
 		"prettier": "^3.1.0",
@@ -16,10 +37,11 @@
 	},
 	"packageManager": "pnpm@8.9.0",
 	"engines": {
-		"node": ">=18"
+		"node": ">=20"
 	},
 	"resolutions": {
 		"@types/node": "20.10.8",
-		"@solana/web3.js": "1.88.0"
+		"@solana/web3.js": "1.88.0",
+		"@solana/buffer-layout": "^4.0.1"
 	}
 }

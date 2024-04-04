@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { SendTokenFormData } from "$lib/types";
+	import { getLogger } from "@valet/lib";
 	import CollectData from "./CollectData.svelte";
 	import ConfirmSend from "./ConfirmSend.svelte";
+
+	const logger = getLogger("send token form");
 
 	let steps = ["collect-data", "send-transaction"];
 	let currentStep = 0;
@@ -10,7 +13,7 @@
 		amount: 0,
 		recipient: ""
 	}
-	
+
 	$: formData;
 
 	const handleNext = () => {

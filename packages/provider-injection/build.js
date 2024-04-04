@@ -1,6 +1,7 @@
 const esbuild = require("esbuild");
 const { nodeBuiltIns } = require("esbuild-node-builtins");
 
+
 const { DEFAULT_SOLANA_CONNECTION_URL, NODE_DEBUG, NODE_ENV } = process.env;
 
 esbuild.build({

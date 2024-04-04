@@ -1,10 +1,19 @@
-<script>
-	import Button from "../ui/button/button.svelte";
+<script lang="ts">
+	import { location, link } from "svelte-spa-router"
 </script>
 
-<nav class="flex justify-around w-full pt-2">
-	<Button href="#/" class="w-full" variant="ghost">Tokens</Button>
-	<Button class="w-full" variant="ghost">NFTS</Button>
-	<Button class="w-full" variant="ghost">Friends</Button>
-	<Button href="#/recent" class="w-full" variant="ghost">Recent Tx</Button>
+<nav class="flex items-center justify-around space-x-2 p-2 w-full text-base">
+	<a
+		href="/token"
+		use:link
+		class={`transition-colors hover:text-foreground/80 
+			${$location === "/token" ? "text-foreground" : "text-foreground/60"}
+		`}
+	>
+		Tokens
+	</a>
+	<p class="cursor-default text-foreground/60">NFTs 🔒</p>
+	<p class="cursor-default text-foreground/60">Friends 🔒</p>
+	<p class="cursor-default text-foreground/60">Recent Tx 🔒</p>
+
 </nav>

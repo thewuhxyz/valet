@@ -1,0 +1,49 @@
+{
+	"name": "@valet/ota-server",
+	"version": "0.1.0",
+	"types": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"build": "esbuild src/server.ts --bundle --platform=node --outdir=dist ",
+		"dev": "nodemon dist/server.js",
+		"supabase-typegen": "supabase gen types typescript --project-id pyrbmnavnitnhcpffagd --schema public > src/database/schema.ts",
+		"watch": "esbuild src/server.ts --bundle --platform=node --outdir=dist --watch"
+	},
+	"dependencies": {
+		"@coral-xyz/anchor": "^0.29.0",
+		"@solana/web3.js": "^1.88.0",
+		"@supabase/supabase-js": "^2.39.2",
+		"@valet/lib": "workspace:*",
+		"@valet/ota-client": "workspace:*",
+		"bcryptjs": "^2.4.3",
+		"bs58": "^5.0.0",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.1",
+		"express": "^4.18.2",
+		"google-auth-library": "^9.6.3",
+		"ioredis": "^5.3.2",
+		"jsonwebtoken": "^9.0.2",
+		"redis": "^4.6.13",
+		"tweetnacl": "^1.0.3",
+		"tweetnacl-util": "^0.15.1",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/body-parser": "^1.19.5",
+		"@types/cookie-parser": "^1.4.6",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^4.17.21",
+		"@types/jsonwebtoken": "^9.0.5",
+		"@types/node": "^20.10.4",
+		"body-parser": "^1.20.2",
+		"esbuild": "^0.19.10",
+		"nodemon": "^3.0.3",
+		"supabase": "^1.131.3",
+		"ts-node": "^10.9.2",
+		"typescript": "~4.9.3"
+	}
+}

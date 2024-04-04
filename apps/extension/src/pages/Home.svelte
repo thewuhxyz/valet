@@ -1,19 +1,15 @@
 <script lang="ts">
-	import PageContainer from "$lib/components/valet-ui/PageContainer.svelte";
 	import NavBar from "$lib/components/valet-ui/NavBar.svelte";
-	import AppBar from "$lib/components/valet-ui/home/AppBar.svelte";
-	import AppHero from "$lib/components/valet-ui/home/AppHero.svelte";
-	import FtList from "$lib/components/valet-ui/token/FtList.svelte";
-</script>
+	import AppBar from "$lib/components/valet-ui/home/AppBar.svelte"
+	import { HomeHero } from "@valet/ui";
+	</script>
 
-<PageContainer>
-	<AppBar />
-	<AppHero />
+<AppBar />
+<HomeHero />
 
-	<div class="flex-1-y-scroll flex flex-col w-full">
-		<NavBar />
-		<div class="flex-1-y-scroll">
-			<FtList />
-		</div>
+<div class="flex-1-y-scroll flex flex-col max-w-3xl items-center w-full">
+	<NavBar />
+	<div class="flex-1-y-scroll w-full flex flex-col items-center">
+		<slot />
 	</div>
-</PageContainer>
+</div>

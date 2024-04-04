@@ -1,17 +1,32 @@
 <script lang="ts">
-	import { keyringStoreState } from "$lib/stores/state-store";
-	import { KeyringStoreState } from "@valet/lib";
-	import Unlocked from "./routes/Unlocked.svelte";
-	import Locked from "./routes/Locked.svelte";
-	import Setup from "./routes/Setup.svelte";
+	import { walletStore } from "$lib/stores/wallet-store";
+	import { KeyringStoreState } from "@valet/background";
+	import Unlocked from "./router/Unlocked.svelte";
+	import Locked from "./router/Locked.svelte";
+	import Setup from "./router/Setup.svelte";
+	import PageContainer from "$lib/components/valet-ui/PageContainer.svelte";
+	import { TokenProvider } from "@valet/ui";
+	import { Toaster } from "$lib/components/ui/sonner"
+
+	$: walletStore.init();
+	$: ({ state } = walletStore);
 </script>
 
 <main>
-	{#if $keyringStoreState === KeyringStoreState.Unlocked}
-		<Unlocked />
-	{:else if $keyringStoreState === KeyringStoreState.Locked}
-		<Locked />
-	{:else}
-		<Setup />
-	{/if}
+	<TokenProvider activeWallet={walletStore}>
+		<PageContainer>
+			{#if $state}
+				{#if $state === KeyringStoreState.Unlocked}
+					<Unlocked />
+				{:else if $state === KeyringStoreState.Locked}
+					<Locked />
+				{:else}
+					<Setup />
+				{/if}
+			{:else}
+				Loading...
+			{/if}
+		</PageContainer>
+	</TokenProvider>
+	<Toaster />
 </main>

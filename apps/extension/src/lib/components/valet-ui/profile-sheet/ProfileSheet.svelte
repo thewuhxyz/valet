@@ -1,12 +1,11 @@
 <script lang="ts">
-	import * as Sheet from "$lib/components/ui/sheet";
-	import Button from "$lib/components/ui/button/button.svelte";
-	import Separator from "$lib/components/ui/separator/separator.svelte";
-	import ProfileCard from "./ProfileCard.svelte";
-	import UserAvatar from "../UserAvatar.svelte";
-	import { BackgroundRequest } from "$lib/background-client";
-	
-
+	import * as Sheet from "$lib/components/ui/sheet"
+	import Button from "$lib/components/ui/button/button.svelte"
+	import Separator from "$lib/components/ui/separator/separator.svelte"
+	import ProfileCard from "./ProfileCard.svelte"
+	import UserAvatar from "../UserAvatar.svelte"
+	import { BackgroundRequest } from "$lib/background-client"
+	import OtaCard from "../ota/OtaCard.svelte"
 </script>
 
 <Sheet.Root>
@@ -19,10 +18,20 @@
 			<ProfileCard />
 		</div>
 		<Separator class="bg-primary" />
-		<div class="flex-1-y-scroll">Profile options</div>
-		<div>
-			<Button variant="secondary" on:click={BackgroundRequest.lock} class="cta-btn">Lock</Button>
-			<Button variant="destructive" on:click={BackgroundRequest.signOut} class="cta-btn">Sign Out</Button>
+		<div class="flex-1-y-scroll w-full">
+			<OtaCard href="/ota" class="p-2 py-1" />
+		</div>
+		<div class="flex flex-col items-center">
+			<Button
+				variant="secondary"
+				on:click={BackgroundRequest.lock}
+				class="cta-btn">Lock</Button
+			>
+			<Button
+				variant="destructive"
+				on:click={BackgroundRequest.signOut}
+				class="cta-btn">Sign Out</Button
+			>
 		</div>
 	</Sheet.Content>
 </Sheet.Root>

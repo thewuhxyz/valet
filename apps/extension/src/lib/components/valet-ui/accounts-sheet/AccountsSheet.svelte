@@ -5,6 +5,9 @@
 	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import SelectAccount from "./SelectAccount.svelte";
 	import ActiveAccount from "./ActiveAccount.svelte";
+	import { walletStore } from "$lib/stores";
+
+	$: ({ isOta } = walletStore);
 </script>
 
 <Sheet.Root>
@@ -16,17 +19,15 @@
 	<Sheet.Content class="flex flex-col pb-0 p-2 pt-4" side="right">
 		<div>
 			<div>Active Account</div>
-			 <ActiveAccount />
+			<ActiveAccount />
 		</div>
 		<div class="flex-1-y-scroll">
 			<Separator class="bg-primary" />
-			<div class="mt-1">Select Account</div>
+			<div class="mt-1">Select {$isOta ? "Delegate" : "Account"}</div>
 			<SelectAccount />
 		</div>
 		<div>
-			<Button variant="secondary" class="cta-btn">
-				Import Account
-			</Button>
+			<Button variant="secondary" class="cta-btn">Import Account</Button>
 		</div>
 	</Sheet.Content>
 </Sheet.Root>

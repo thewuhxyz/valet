@@ -12,7 +12,7 @@
 </script>
 
 <form
-	class="px-4 flex flex-col items-center w-full"
+	class="px-4 flex flex-col items-center max-w-3xl w-full"
 	on:submit|preventDefault={() => handleSubmit(password)}
 >
 	<Label for="password" class="w-full">

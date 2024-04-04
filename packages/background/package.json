@@ -1,0 +1,43 @@
+{
+	"name": "@valet/background",
+	"version": "0.1.0",
+	"module": "dist/esm/index.js",
+	"source": "src/index.ts",
+	"types": "dist/esm/index.d.ts",
+	"scripts": {
+		"build": "rollup -c",
+		"supabase-typegen": "supabase gen types typescript --project-id pyrbmnavnitnhcpffagd --schema public > src/database/schema.ts"
+	},
+	"dependencies": {
+		"@coral-xyz/anchor": "0.29.0",
+		"@solana/web3.js": "1.88.0",
+		"@supabase/supabase-js": "^2.39.2",
+		"@valet/lib": "workspace:*",
+		"@valet/ota-client": "workspace:*",
+		"@valet/token": "workspace:*",
+		"bip32": "^4.0.0",
+		"bip32-path": "^0.4.2",
+		"bip39": "^3.1.0",
+		"bs58": "^5.0.0",
+		"ed25519-hd-key": "^1.3.0",
+		"eventemitter3": "^4.0.7",
+		"google-auth-library": "^9.6.3",
+		"tweetnacl": "^1.0.3",
+		"uuid": "^9.0.1"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^25.0.7",
+		"@rollup/plugin-json": "^6.1.0",
+		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-replace": "^5.0.5",
+		"@rollup/plugin-typescript": "^11.1.6",
+		"@types/bn.js": "^5.1.5",
+		"@types/chrome": "^0.0.254",
+		"@types/node": "^20.10.4",
+		"bn.js": "^5.2.1",
+		"dotenv": "^16.4.1",
+		"rollup": "^4.13.0",
+		"supabase": "^1.131.3",
+		"typescript": "~4.9.3"
+	}
+}

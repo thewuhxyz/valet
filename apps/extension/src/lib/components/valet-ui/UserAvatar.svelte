@@ -1,17 +1,19 @@
 <script lang="ts">
 	import * as Avatar from "$lib/components/ui/avatar";
-	import { userStore } from "$lib/stores";
+	import { walletStore } from "$lib/stores";
 
-	let className = "";
+	$: ({ user } = walletStore);
+
+	let twClass = "";
 	export let size = 8;
-	export { className as class };
+	export { twClass as class };
 </script>
 
-<Avatar.Root class={`w-${size} h-${size} ${className}`}>
-	{#if $userStore}
-		<Avatar.Image src={$userStore.avatar} alt={`${$userStore.name}`} />
+<Avatar.Root class={`w-${size} h-${size} ${twClass}`}>
+	{#if $user}
+		<Avatar.Image src={$user.avatar} alt={`${$user.name}`} />
 		<Avatar.Fallback class="hover:cursor-default text-lg">
-			{$userStore.name[0]}
+			{$user.name ? $user.name[0] : "?"}
 		</Avatar.Fallback>
 	{:else}
 		<Avatar.Fallback class="hover:cursor-default text-lg">V</Avatar.Fallback>

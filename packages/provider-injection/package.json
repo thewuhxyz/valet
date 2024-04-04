@@ -3,9 +3,7 @@
 	"version": "0.1.0",
 	"module": "dist/esm/index.js",
 	"scripts": {
-		"build": "node build.js; cp ./dist/browser/index.js ../../apps/extension/public/injected.js",
-		"dev": "node build.js; cp ./dist/browser/index.js ../../apps/extension/public/injected.js; cp ./dist/browser/index.js.map ../../apps/extension/public/injected.js.map",
-		"build:ts": "tsc"
+		"build": "node build.js; cp ./dist/browser/index.js ../../apps/extension/public/injected.js"
 	},
 	"dependencies": {
 		"@valet/lib": "workspace:*",

@@ -1,0 +1,37 @@
+{
+	"name": "@valet/ota-client",
+	"version": "0.1.0",
+	"module": "dist/esm/index.js",
+	"source": "src/index.ts",
+	"types": "dist/esm/index.d.ts",
+	"exports": {
+		".": "./dist/esm/index.js"
+	},
+	"scripts": {
+		"build": "tsc"
+	},
+	"dependencies": {
+		"@coral-xyz/anchor": "^0.29.0",
+		"@solana/wallet-adapter-base": "^0.9.23",
+		"@solana/web3.js": "^1.63.1",
+		"@valet/lib": "workspace:*",
+		"@valet/protocol": "workspace:^",
+		"@valet/provider": "workspace:^",
+		"autoprefixer": "^10.4.17",
+		"axios": "^1.6.7",
+		"bn.js": "^5.2.1",
+		"bs58": "^5.0.0",
+		"cookie": "^0.6.0",
+		"eventemitter3": "^4.0.7",
+		"js-cookie": "^3.0.5",
+		"tweetnacl": "^1.0.3",
+		"tweetnacl-util": "^0.15.1",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@types/bn.js": "^5.1.5",
+		"@types/cookie": "^0.6.0",
+		"@types/js-cookie": "^3.0.6",
+		"typescript": "~4.9.3"
+	}
+}

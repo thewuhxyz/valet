@@ -1,34 +1,49 @@
 import {
 	UI_RPC_METHOD_SIGN_IN,
 	UI_RPC_METHOD_SIGN_OUT,
-	getBackgroundClient,
-	type KeyringStoreState,
 	UI_RPC_METHOD_KEYRING_STORE_STATE,
 	UI_RPC_METHOD_KEYRING_STORE_MNEMONIC_CREATE,
 	UI_RPC_METHOD_KEYRING_STORE_CREATE,
-	DerivationPath,
+	getLogger,
 	UI_RPC_METHOD_KEYRING_STORE_UNLOCK,
 	UI_RPC_METHOD_KEYRING_STORE_CREATE_NEW,
 	UI_RPC_METHOD_KEYRING_STORE_CREATE_EXISTING,
 	SOLANA_CONNECTION_RPC_CUSTOM_SPL_TOKEN_ACCOUNTS,
-	SolanaSplConnection,
-	type CustomSplTokenAccountsResponseString,
 	UI_RPC_METHOD_WALLET_DATA_ACTIVE_WALLET,
-	type WalletPublicKey,
 	UI_RPC_METHOD_KEYRING_STORE_READ_ALL_PUBKEYS,
 	UI_RPC_METHOD_CONNECTION_URL_READ,
-	type NamedPublicKey,
-	type SolanaTokenAccountWithKeyAndProgramIdString,
-	type TokenMetadataString,
-	type SplNftMetadataString,
 	SOLANA_CONNECTION_RPC_CUSTOM_SPL_METADATA_URI,
-	type ValetUser,
 	UI_RPC_METHOD_GET_USER_DATA,
 	UI_RPC_METHOD_IS_MNEMONIC_IN_DB,
 	UI_RPC_METHOD_KEYRING_STORE_LOCK,
+	UI_RPC_METHOD_SOLANA_SIGN_TRANSACTION,
+	UI_RPC_METHOD_SOLANA_PREPARE_OTA_TRANSACTION,
+	UI_RPC_METHOD_WALLET_DATA_DELEGATE_WALLET,
+	UI_RPC_METHOD_WALLET_DATA_ACTIVE_WALLET_UPDATE,
+	UI_RPC_METHOD_WALLET_DATA_DELEGATE_WALLET_UPDATE,
+	UI_RPC_METHOD_OTA_READ_PUBKEY,
+	UI_RPC_METHOD_OTA_TRANSFER_DELEGATE_LOCAL,
+	UI_RPC_METHOD_OTA_TRANSFER_DELEGATE_SERVER,
+} from "@valet/lib";
+import {
+	SolanaSplConnection,
+	type CustomSplTokenAccountsResponseString,
+	type SolanaTokenAccountWithKeyAndProgramIdString,
+	type TokenMetadataString,
+	type SplNftMetadataString,
+} from "@valet/token";
+import {
+	getBackgroundClient,
+	type KeyringStoreState,
+	DerivationPath,
+	type WalletPublicKey,
+	type NamedPublicKey,
+	type UserData,
 	getBackgroundSolanaClient,
 	getBackgroundResponseClient,
-} from "@valet/lib";
+} from "@valet/background";
+
+const logger = getLogger("background client in svelte:");
 
 export class BackgroundRequest {
 	static async getActiveWalletWithName(): Promise<NamedPublicKey> {
@@ -159,11 +174,43 @@ export class BackgroundRequest {
 		});
 	}
 
+	static async getOtaPubkey(): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_OTA_READ_PUBKEY,
+			params: [],
+		});
+	}
+
 	static async getActiveWallet(): Promise<string> {
 		const background = getBackgroundClient();
 		return await background.request({
 			method: UI_RPC_METHOD_WALLET_DATA_ACTIVE_WALLET,
 			params: [],
+		});
+	}
+
+	static async updateActiveWallet(newWallet: string): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_WALLET_DATA_ACTIVE_WALLET_UPDATE,
+			params: [newWallet],
+		});
+	}
+
+	static async getDelegateWallet(): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_WALLET_DATA_DELEGATE_WALLET,
+			params: [],
+		});
+	}
+
+	static async updateDelegateWallet(newWallet: string): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_WALLET_DATA_DELEGATE_WALLET_UPDATE,
+			params: [newWallet],
 		});
 	}
 
@@ -183,11 +230,49 @@ export class BackgroundRequest {
 		});
 	}
 
-	static async getUserData(): Promise<ValetUser> {
+	static async getUserData(): Promise<UserData> {
 		const background = getBackgroundClient();
 		return await background.request({
 			method: UI_RPC_METHOD_GET_USER_DATA,
 			params: [],
+		});
+	}
+
+	static async signTransaction(
+		txStr: string,
+		walletPublicKey: string
+	): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_SOLANA_SIGN_TRANSACTION,
+			params: [txStr, walletPublicKey],
+		});
+	}
+
+	static async prepareOtaTransaction(
+		txStr: string,
+		isVersioned: boolean
+	): Promise<[string, string]> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_SOLANA_PREPARE_OTA_TRANSACTION,
+			params: [txStr, isVersioned],
+		});
+	}
+	
+	static async otaTransferDelegateLocal(from:string, to: string): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_OTA_TRANSFER_DELEGATE_LOCAL,
+			params: [from, to],
+		});
+	}
+	
+	static async otaTransferDelegateServer(from:string, to: string, password: string): Promise<string> {
+		const background = getBackgroundClient();
+		return await background.request({
+			method: UI_RPC_METHOD_OTA_TRANSFER_DELEGATE_SERVER,
+			params: [from, to, password],
 		});
 	}
 }

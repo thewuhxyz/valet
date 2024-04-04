@@ -20,7 +20,7 @@ export class InjectedRequestManager {
     this._requestId = 0;
     this._responseResolvers = {};
     this._parent = parent;
-    this._logger = getLogger("channel/injected-request-manager");
+    this._logger = getLogger("common/request-manager");
 
     if (parent) {
       this._url = window.location.href;

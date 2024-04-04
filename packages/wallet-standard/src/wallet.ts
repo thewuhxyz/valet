@@ -294,22 +294,15 @@ export class ValetWallet implements Wallet {
 
     #signIn: SolanaSignInMethod = async (...inputs) => {
         const outputs: SolanaSignInOutput[] = [];
-
-        // todo: update to one-click sign in from connect and sign
         if (!this.#account) await this.#connect();
-
         if (inputs.length === 1) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-
             if (!this.#account) throw new Error('No valet account present');
             const input = inputs[0]!;
 
             if (!input.domain) throw new Error('Domain was not provided');
-
+            
             const signInInput = { ...input, address: this.#account.address, domain: input.domain! };
-
             const signedMessage = createSignInMessage(signInInput);
-
             const signature = await this.#valet.signMessage(signedMessage, new PublicKey(this.#account.address));
 
             outputs.push({ account: this.#account, signedMessage, signature });
