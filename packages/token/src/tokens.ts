@@ -1,5 +1,4 @@
 import * as anchor from "@coral-xyz/anchor"
-import { AnchorProvider, BN } from "@coral-xyz/anchor"
 import { getLogger, externalResourceUri } from "@valet/lib"
 import { splTokenProgram } from "@coral-xyz/spl-token"
 import {
@@ -9,6 +8,7 @@ import {
 import { MintLayout } from "@solana/spl-token"
 import type { Connection } from "@solana/web3.js"
 import { PublicKey } from "@solana/web3.js"
+import { BN } from "bn.js"
 import type {
 	RawMintWithProgramId,
 	ReplaceTypes,
@@ -54,10 +54,10 @@ export class TokenInterface {
 	/**
 	 * Wallet and network provider.
 	 */
-	public get provider(): AnchorProvider {
+	public get provider(): anchor.AnchorProvider {
 		return this._provider
 	}
-	private _provider: AnchorProvider
+	private _provider: anchor.AnchorProvider
 
 	/**
 	 * Utility function that must be used to access any inner token program. Creates
@@ -83,7 +83,7 @@ export class TokenInterface {
 	 * The constructor looks just like the normal `Spl.token` constructor for ease
 	 * of use.
 	 */
-	public constructor(provider: AnchorProvider) {
+	public constructor(provider: anchor.AnchorProvider) {
 		this._provider = provider
 		const fallbackClient = splTokenProgram({ provider })
 		this._clients = new Map([[TOKEN_PROGRAM_ID, fallbackClient]])
@@ -203,7 +203,7 @@ export type CustomSplTokenAccountsResponseString = ReplaceTypes<
 >
 
 export async function fetchMints(
-	provider: AnchorProvider,
+	provider: anchor.AnchorProvider,
 	tokenAccounts: SolanaTokenAccountWithKeyAndProgramId[]
 ): Promise<Array<[string, RawMintWithProgramId | null]>> {
 	const mints: [string, RawMintWithProgramId | null][] = (
@@ -226,7 +226,7 @@ export async function fetchMints(
 }
 
 export async function fetchSplMetadata(
-	provider: AnchorProvider,
+	provider: anchor.AnchorProvider,
 	tokens: SolanaTokenAccountWithKeyAndProgramId[]
 ): Promise<(TokenMetadata | null)[]> {
 	//

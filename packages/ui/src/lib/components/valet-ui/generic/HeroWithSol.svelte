@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { getActiveWallet, getTokens } from "$lib/stores/context.js";
+	import { getActiveWallet } from "$lib/stores/context.js";
 	import Hero from "./Hero.svelte";
 
-	// $: ({ solBalance } = getTokens());
 	$: ({ solBalance } = getActiveWallet());
 	$: solAmount = $solBalance ? $solBalance.displayBalance : "-";
 </script>
