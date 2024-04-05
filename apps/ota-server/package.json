@@ -7,6 +7,7 @@
 	},
 	"scripts": {
 		"build": "esbuild src/server.ts --bundle --platform=node --outdir=dist ",
+		"start": "pnpm build && node dist/server.js",
 		"dev": "nodemon dist/server.js",
 		"supabase-typegen": "supabase gen types typescript --project-id pyrbmnavnitnhcpffagd --schema public > src/database/schema.ts",
 		"watch": "esbuild src/server.ts --bundle --platform=node --outdir=dist --watch"

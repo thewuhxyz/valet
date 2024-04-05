@@ -4,6 +4,7 @@
 	"scripts": {
 		"build": "turbo build",
 		"dev": "turbo dev",
+		"start": "turbo start",
 		"anchor:build": "anchor build -p valet_protocol",
 		"anchor:deploy": "anchor deploy -p valet_protocol",
 		"anchor:test": "turbo anchor-test --filter=protocol",

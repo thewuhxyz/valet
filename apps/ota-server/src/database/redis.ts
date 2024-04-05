@@ -1,10 +1,9 @@
 import Redis from "ioredis"
 import { ProjectData } from "./client"
 
-export const redis = new Redis({
-	host: "127.0.0.1",
-	port: 6379,
-})
+const redisUrl = process.env.VALET_REDIS_URL
+
+export const redis = redisUrl ? new Redis(redisUrl) : new Redis()
 
 export class RedisCache {
 	static async allowedOrigins(redis: Redis) {
