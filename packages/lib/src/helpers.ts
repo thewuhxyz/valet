@@ -2,11 +2,8 @@ import { v1 } from "uuid"
 import {
 	Cluster,
 	Connection,
-	Keypair,
-	PublicKey,
 	Transaction,
 	VersionedTransaction,
-	clusterApiUrl,
 } from "@solana/web3.js"
 import bs58 from "bs58"
 import {
@@ -49,7 +46,6 @@ export function externalResourceUri(
 	}
 	if (uri && uri.startsWith("ipfs://")) {
 		return uri.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/")
-		// return uri.replace("ipfs://", "https://ipfs.io/ipfs/");
 	}
 	if (uri && uri.startsWith("ar://")) {
 		return uri.replace("ar://", "https://arweave.net/")
@@ -73,7 +69,6 @@ export function parseUrlHash(url: string) {
 }
 
 export async function getCluster(conn: Connection): Promise<Cluster | null> {
-	// const conn = PgConnection.createConnection({ endpoint: rpcUrl });
 	const genesisHash = await conn.getGenesisHash()
 	switch (genesisHash) {
 		case RPC_DEVNET_GENESIS_HASH:
@@ -94,13 +89,6 @@ export function decodeJWT(token: string) {
 
 	return payload
 }
-
-const nowInEpochSeconds = () => Math.floor(Date.now() / 1000)
-
-const getExpiryTime = (timeInSeconds: number): [number, number] => [
-	nowInEpochSeconds() + timeInSeconds,
-	nowInEpochSeconds(),
-]
 
 export async function imageUrlToBase64(url: string): Promise<string | null> {
 	try {
