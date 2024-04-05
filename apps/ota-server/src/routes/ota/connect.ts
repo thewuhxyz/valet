@@ -25,7 +25,7 @@ import { getProject } from "./middleware"
 
 const jwtSecret = process.env.JWT_SECRET!
 const encryptionKey = process.env.VALET_ENCRYPTION_KEY!
-const prod = process.env.NODE_ENV === "production"
+const prod = process.env.VALET_ENV === "production"
 
 router.post("/connect", async (req, res) => {
 	try {
