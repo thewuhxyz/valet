@@ -1,4 +1,4 @@
-import base58, { encode } from "bs58"
+import bs58 from "bs58"
 import {
 	Commitment,
 	Connection,
@@ -168,7 +168,7 @@ export class OtaClient {
 			instructions: [ix],
 		}).compileToV0Message()
 
-		return encode(new VersionedTransaction(messageV0).serialize())
+		return bs58.encode(new VersionedTransaction(messageV0).serialize())
 	}
 
 	async prepareOtaTransaction(
@@ -185,7 +185,7 @@ export class OtaClient {
 
 		return [
 			this.delegateWallet,
-			base58.encode(transaction.serialize({ requireAllSignatures: false })),
+			bs58.encode(transaction.serialize({ requireAllSignatures: false })),
 		]
 	}
 }

@@ -21,7 +21,7 @@ import {
 import { Provider } from "../protocol"
 import { Wallet } from "@coral-xyz/anchor"
 import { deserializeOriginalTransaction } from "@valet/lib"
-import { encode } from "bs58"
+import bs58 from "bs58"
 
 export class OtaDappServer {
 	cookieMethods: CookieMethods
@@ -198,7 +198,7 @@ export class OtaDappServer {
 
 			const signedTx = await this.wallet.signTransaction(tx)
 
-			txString = encode(signedTx.serialize({ requireAllSignatures: false }))
+			txString = bs58.encode(signedTx.serialize({ requireAllSignatures: false }))
 
 			const { payload } = this.encryptPayload({
 				...providerItem,
@@ -238,7 +238,7 @@ export class OtaDappServer {
 
 					const signedTx = await this.wallet.signTransaction(tx)
 
-					txString = encode(signedTx.serialize({ requireAllSignatures: false }))
+					txString = bs58.encode(signedTx.serialize({ requireAllSignatures: false }))
 
 					return { txString, isVersioned }
 				})
