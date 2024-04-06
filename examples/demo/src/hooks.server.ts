@@ -7,13 +7,13 @@ import {
 } from "$env/static/private"
 import { OtaDappServer } from "@valet/ota"
 import { dappWallet } from "$lib/demo-protocol/dapp-wallet"
-import { PUBLIC_PROJECT_GOOGLE_ID } from "$env/static/public"
+import { PUBLIC_DEMO_DOMAIN, PUBLIC_PROJECT_GOOGLE_ID } from "$env/static/public"
 
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.oauth2client = new OAuth2Client({
 		clientId: PUBLIC_PROJECT_GOOGLE_ID,
 		clientSecret: PROJECT_GOOGLE_SECRET,
-		redirectUri: "http://localhost:5173/auth/callback",
+		redirectUri: `${PUBLIC_DEMO_DOMAIN}/auth/callback`,
 	})
 
 	event.locals.otaDappServer = new OtaDappServer(
