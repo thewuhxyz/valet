@@ -50,8 +50,9 @@ router.post("/connect", async (req, res) => {
 		const { domain, secret, google } = project
 
 		if (req.headers["origin"] !== domain) {
-			res.json(OtaResponse.error("Dapp origin doesn't match."))
-			return
+			// todo
+			// res.json(OtaResponse.error("Dapp origin doesn't match."))
+			// return
 		}
 
 		const dappPayload = decryptDappPayload(secret!, payload)

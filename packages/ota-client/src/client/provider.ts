@@ -99,63 +99,73 @@ export class OtaProvider {
 	}
 
 	async connect() {
-		if (this.connected) return
+		try {
+			if (this.connected) return
 
-		const { data: dappConnectResponse, error: dappConnectError } =
-			await this.sendRequestToDappServer({
+			const { data: dappConnectResponse, error: dappConnectError } =
+				await this.sendRequestToDappServer({
+					action: OtaAction.Connect,
+					payload: {},
+				})
+
+			if (!dappConnectResponse) {
+				dappConnectError && renderError(dappConnectError.message)
+				return
+			}
+
+			const password = await getPassword()
+
+			if (!password) return
+
+			const connectParams = { ...dappConnectResponse, password }
+
+			const responseData = await this.sendRequestToServer({
 				action: OtaAction.Connect,
-				payload: {},
+				payload: connectParams,
 			})
 
-		if (!dappConnectResponse) {
-			dappConnectError && renderError(dappConnectError.message)
-			return
+			if (!responseData) return
+
+			const { success } = connectResponseSchema.safeParse(responseData)
+			if (!success) return
+
+			const { data, error } = connectResponseSchema.parse(responseData)
+
+			if (!data) {
+				console.error(error?.message)
+				if (error) renderError(error?.message)
+				return
+			}
+
+			const { image } = data
+
+			this.setUserData(image)
+		} catch (e: any) {
+			console.error("error connecting to dapp:", e)
+			renderError(e.message || e)
 		}
-
-		const password = await getPassword()
-
-		if (!password) return
-
-		const connectParams = { ...dappConnectResponse, password }
-
-		const responseData = await this.sendRequestToServer({
-			action: OtaAction.Connect,
-			payload: connectParams,
-		})
-
-		if (!responseData) return
-
-		const { success } = connectResponseSchema.safeParse(responseData)
-		if (!success) return
-
-		const { data, error } = connectResponseSchema.parse(responseData)
-
-		if (!data) {
-			console.error(error?.message)
-			return
-		}
-
-		const { image } = data
-
-		this.setUserData(image)
 	}
 
 	async disconnect() {
-		const { error: otaServerError } = await this.sendRequestToServer({
-			action: OtaAction.Disconnect,
-			payload: {},
-		})
+		try {
+			const { error: otaServerError } = await this.sendRequestToServer({
+				action: OtaAction.Disconnect,
+				payload: {},
+			})
 
-		if (otaServerError) return
+			if (otaServerError) return
 
-		const { error: dappServerError } = await this.sendRequestToDappServer({
-			action: OtaAction.Disconnect,
-			payload: {},
-		})
+			const { error: dappServerError } = await this.sendRequestToDappServer({
+				action: OtaAction.Disconnect,
+				payload: {},
+			})
 
-		if (dappServerError) return
+			if (dappServerError) return
 
-		this.clearUserData()
+			this.clearUserData()
+		} catch (e: any) {
+			console.error(e.message || e)
+		}
 	}
 
 	async signTransaction<T extends Transaction | VersionedTransaction>(

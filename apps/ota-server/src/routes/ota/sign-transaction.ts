@@ -86,8 +86,9 @@ router.post("/sign-transaction", async (req, res) => {
 		const { nonce: userNonce } = userJwtSchema.parse(userTokenAnyPayload)
 
 		if (req.headers["origin"] !== origin) {
-			res.json(OtaResponse.error("Dapp origin doesn't match."))
-			return
+			// todo
+			// res.json(OtaResponse.error("Dapp origin doesn't match."))
+			// return
 		}
 
 		const cipherPayload = decryptCipherText(

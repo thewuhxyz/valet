@@ -108,8 +108,9 @@ router.post("/sign-all-transactions", async (req, res) => {
 		const { dappClientId, dappSecret, userDelegate } = cipherPayload
 
 		if (req.headers["origin"] !== origin) {
-			res.json(OtaResponse.error("Dapp origin doesn't match."))
-			return
+			// todo
+			// res.json(OtaResponse.error("Dapp origin doesn't match."))
+			// return
 		}
 
 		const dappPayload = decryptDappPayload(dappSecret, payload)
