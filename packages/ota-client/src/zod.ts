@@ -35,7 +35,7 @@ export type OtaConnectRequest = z.infer<typeof connectRequestSchema>
 export const signTransactionSchema = z.object({
 	projectId: z.string(),
 	payload: z.string(),
-	// nonce: z.string(),
+	nonce: z.string(),
 })
 
 export type OtaSignAllTransactionsRequest = z.infer<
@@ -45,7 +45,7 @@ export type OtaSignAllTransactionsRequest = z.infer<
 export const signAllTransactionsSchema = z.object({
 	projectId: z.string(),
 	payload: z.string(),
-	// nonce: z.string(),
+	nonce: z.string(),
 })
 
 export type OtaSignTransactionRequest = z.infer<typeof signTransactionSchema>
@@ -67,6 +67,7 @@ export const dappConnectDataSchema = dappBaseDataSchema.extend({})
 export type DappConnectData = z.infer<typeof dappConnectDataSchema>
 
 export const connectResponseDataSchema = z.object({
+	userToken: z.string(),
 	image: z.string().nullable(),
 })
 export type OtaConnectResponseData = z.infer<typeof connectResponseDataSchema>
