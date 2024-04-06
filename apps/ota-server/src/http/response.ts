@@ -15,9 +15,9 @@ export class OtaResponse {
 			error: { message },
 		} satisfies OtaBaseResponse;
 	}
-	static connect({ image }: OtaConnectResponseData): OtaConnectResponse {
+	static connect({ image, userToken }: OtaConnectResponseData): OtaConnectResponse {
 		return {
-			data: { image },
+			data: { image, userToken },
 			error: null,
 		} satisfies OtaBaseResponse;
 	}

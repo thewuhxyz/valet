@@ -137,9 +137,9 @@ export class OtaProvider {
 				return
 			}
 
-			const { image } = data
+			const { image, userToken } = data
 
-			this.setUserData(image)
+			this.setUserData({ img: image, token: userToken  })
 		} catch (e: any) {
 			console.error("error connecting to dapp:", e)
 			renderError(e.message || e)
@@ -352,14 +352,19 @@ export class OtaProvider {
 		this._icon = undefined
 	}
 
-	setUserData(img?: string | null) {
-		const userData = this.getUserData()
+	setUserData({ img, token }: { token: string; img?: string | null }) {
+		// const userData = this.getUserData()
+		const userData = this.decodeUserToken(token)
 
 		if (!userData) return
 
 		if (img) localStorage.setItem(VALET_USER_AVATAR, img)
 
 		this.setWalletData({ ...userData, icon: img || undefined })
+
+		Cookies.set(VALET_USER_TOKEN, token, {
+			expires: new Date(Date.now() + 3600000),
+		})
 	}
 
 	getUserData() {
