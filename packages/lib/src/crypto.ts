@@ -1,18 +1,18 @@
 import { pbkdf2 } from "crypto"
-import {randomBytes, secretbox} from "tweetnacl"
+import nacl from "tweetnacl"
 import bs58 from "bs58"
 
 export async function encrypt(
 	plaintext: string,
 	password: string
 ): Promise<SecretPayload> {
-	const salt = randomBytes(16)
+	const salt = nacl.randomBytes(16)
 	const kdf = "pbkdf2"
 	const iterations = 100000
 	const digest = "sha256"
 	const key = await deriveEncryptionKey(password, salt, iterations, digest)
-	const nonce = randomBytes(secretbox.nonceLength)
-	const ciphertext = secretbox(Buffer.from(plaintext), nonce, key)
+	const nonce = nacl.randomBytes(nacl.secretbox.nonceLength)
+	const ciphertext = nacl.secretbox(Buffer.from(plaintext), nonce, key)
 	return {
 		ciphertext: bs58.encode(ciphertext),
 		nonce: bs58.encode(nonce),
@@ -38,7 +38,7 @@ export async function decrypt(
 	const nonce = bs58.decode(encodedNonce)
 	const salt = bs58.decode(encodedSalt)
 	const key = await deriveEncryptionKey(password, salt, iterations, digest)
-	const plaintext = secretbox.open(ciphertext, nonce, key)
+	const plaintext = nacl.secretbox.open(ciphertext, nonce, key)
 	if (!plaintext) {
 		throw new Error("Incorrect password")
 	}
@@ -57,7 +57,7 @@ async function deriveEncryptionKey(
 			password,
 			salt,
 			iterations,
-			secretbox.keyLength,
+			nacl.secretbox.keyLength,
 			digest,
 			(err, key) => (err ? reject(err) : resolve(key))
 		)
