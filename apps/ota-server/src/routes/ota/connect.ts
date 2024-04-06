@@ -174,15 +174,6 @@ router.post("/connect", async (req, res) => {
 			maxAge: 3600000,
 		})
 
-		// res.cookie("valet-user-token", userToken, {
-		// 	path: "/",
-		// 	httpOnly: false,
-		// 	secure: prod,
-		// 	sameSite: !prod ? "lax" : "none",
-		// 	expires: new Date(Date.now() + 3600000),
-		// 	maxAge: 3600000,
-		// })
-
 		res.json(
 			OtaResponse.connect({
 				image: processedImage,

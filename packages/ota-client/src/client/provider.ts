@@ -353,7 +353,6 @@ export class OtaProvider {
 	}
 
 	setUserData({ img, token }: { token: string; img?: string | null }) {
-		// const userData = this.getUserData()
 		const userData = this.decodeUserToken(token)
 
 		if (!userData) return

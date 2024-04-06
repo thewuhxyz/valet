@@ -3,8 +3,6 @@ import {
 	serverJwtSchema,
 	signTransactionSchema,
 	intoProvider,
-	// VALET_USER_TOKEN,
-	// userJwtSchema,
 } from "@valet/ota-client"
 import { OtaResponse } from "../../http/response"
 import { decryptDappPayload, decryptCipherText } from "../../crypto"
@@ -44,22 +42,6 @@ router.post("/sign-transaction", async (req, res) => {
 			return
 		}
 
-		// const userTokenString: string = req.cookies[VALET_USER_TOKEN]
-		
-		// let userTokenAnyPayload
-
-		// try {
-		// 	userTokenAnyPayload = jwt.verify(userTokenString, jwtSecret)
-		// } catch (e) {
-		// 	console.error("could not verify serverJwt. error:", e)
-		// 	res.json(
-		// 		OtaResponse.error(
-		// 			"Error processing jwt on server. User may not be signed in"
-		// 		)
-		// 	)
-		// 	return
-		// }
-
 		const { success: serverJwtParseSuccess } = serverJwtSchema.safeParse(
 			serverTokenAnyPayload
 		)
@@ -72,18 +54,6 @@ router.post("/sign-transaction", async (req, res) => {
 		}
 
 		const { cipherText, origin } = serverJwtSchema.parse(serverTokenAnyPayload)
-
-		// const { success: userJwtParseSuccess } =
-		// 	userJwtSchema.safeParse(userTokenAnyPayload)
-
-		// if (!userJwtParseSuccess) {
-		// 	res.json(
-		// 		OtaResponse.error("Error parsing server jwt. User may not be logged in")
-		// 	)
-		// 	return
-		// }
-
-		// const { nonce: userNonce } = userJwtSchema.parse(userTokenAnyPayload)
 
 		if (req.headers["origin"] !== origin) {
 			// todo
