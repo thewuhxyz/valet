@@ -10,8 +10,8 @@ import {
 	OtaClientConfig,
 	ProviderItem,
 } from "./types"
-import { secretbox, randomBytes } from "tweetnacl"
-import { decodeBase64, decodeUTF8, encodeBase64 } from "tweetnacl-util"
+import nacl from "tweetnacl"
+import util from "tweetnacl-util"
 import {
 	DappServerRequest,
 	DappServerSignAllTransactionsPayload,
@@ -269,12 +269,12 @@ export class OtaDappServer {
 	encryptPayload(payload: DappPayload) {
 		const payloadString = JSON.stringify(payload)
 
-		const nonce = randomBytes(secretbox.nonceLength)
+		const nonce = nacl.randomBytes(nacl.secretbox.nonceLength)
 
-		const encryptedPayload = secretbox(
-			decodeUTF8(payloadString),
+		const encryptedPayload = nacl.secretbox(
+			util.decodeUTF8(payloadString),
 			nonce,
-			decodeBase64(this.projectSecret)
+			util.decodeBase64(this.projectSecret)
 		)
 
 		const combined = new Uint8Array(nonce.length + encryptedPayload.length)
@@ -283,7 +283,7 @@ export class OtaDappServer {
 		combined.set(encryptedPayload, nonce.length)
 
 		return {
-			payload: encodeBase64(combined),
+			payload: util.encodeBase64(combined),
 		}
 	}
 }

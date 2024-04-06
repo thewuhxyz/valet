@@ -1,11 +1,6 @@
 import { CipherPayload, cipherPayloadSchema } from "@valet/ota-client"
-import { randomBytes, secretbox } from "tweetnacl"
-import {
-	decodeBase64,
-	decodeUTF8,
-	encodeBase64,
-	encodeUTF8,
-} from "tweetnacl-util"
+import nacl from "tweetnacl"
+import util from "tweetnacl-util"
 import bcrypt from "bcryptjs"
 import { SecretPayload, decrypt, encrypt } from "@valet/lib"
 
@@ -13,20 +8,20 @@ export const decryptDappPayload = (
 	developerSecretKey: string,
 	payload: string
 ) => {
-	const combined = decodeBase64(payload)
+	const combined = util.decodeBase64(payload)
 
 	// Extract the nonce and encrypted data
-	const nonce = combined.slice(0, secretbox.nonceLength)
-	const ciphertext = combined.slice(secretbox.nonceLength)
-	const decryptedMessage = secretbox.open(
+	const nonce = combined.slice(0, nacl.secretbox.nonceLength)
+	const ciphertext = combined.slice(nacl.secretbox.nonceLength)
+	const decryptedMessage = nacl.secretbox.open(
 		ciphertext,
 		nonce,
-		decodeBase64(developerSecretKey)
+		util.decodeBase64(developerSecretKey)
 	)
 
 	if (!decryptedMessage) return
 
-	return JSON.parse(encodeUTF8(decryptedMessage)) as { [x: string]: any }
+	return JSON.parse(util.encodeUTF8(decryptedMessage)) as { [x: string]: any }
 }
 
 export const encryptCipherText = (
@@ -35,16 +30,16 @@ export const encryptCipherText = (
 ) => {
 	const payloadString = JSON.stringify(payload)
 
-	const nonceBuf = randomBytes(secretbox.nonceLength)
+	const nonceBuf = nacl.randomBytes(nacl.secretbox.nonceLength)
 
-	const encryptedTextBuf = secretbox(
-		decodeUTF8(payloadString),
+	const encryptedTextBuf = nacl.secretbox(
+		util.decodeUTF8(payloadString),
 		nonceBuf,
-		decodeBase64(encryptionKey)
+		util.decodeBase64(encryptionKey)
 	)
 
-	const nonce = encodeBase64(nonceBuf)
-	const cipherText = encodeBase64(encryptedTextBuf)
+	const nonce = util.encodeBase64(nonceBuf)
+	const cipherText = util.encodeBase64(encryptedTextBuf)
 
 	return { cipherText, nonce }
 }
@@ -54,21 +49,20 @@ export const decryptCipherText = (
 	nonce: string,
 	encryptionKey: string
 ) => {
-	const text = secretbox.open(
-		decodeBase64(cipherText),
-		decodeBase64(nonce),
-		decodeBase64(encryptionKey)
+	const text = nacl.secretbox.open(
+		util.decodeBase64(cipherText),
+		util.decodeBase64(nonce),
+		util.decodeBase64(encryptionKey)
 	)
-
 	if (!text) return
-	const cipherPayloadAny = JSON.parse(encodeUTF8(text))
+	const cipherPayloadAny = JSON.parse(util.encodeUTF8(text))
 	const { success } = cipherPayloadSchema.safeParse(cipherPayloadAny)
 	if (!success) return
 	return cipherPayloadSchema.parse(cipherPayloadAny)
 }
 
 export const generateSecret = () =>
-	encodeBase64(randomBytes(secretbox.keyLength))
+	util.encodeBase64(nacl.randomBytes(nacl.secretbox.keyLength))
 
 export class Password {
 	static async hash(password: string, saltRounds: number = 10) {
@@ -82,16 +76,13 @@ export class Password {
 
 export class Secret {
 	static async encrypt(secret: string, password: string) {
-		const some = await Password.hash(password, 5)
-		const foo = await encrypt(secret, password)
-		const buf = encodeBase64(decodeUTF8(JSON.stringify(foo)))
-		return buf
+		const cipherText = await encrypt(secret, password)
+		return util.encodeBase64(util.decodeUTF8(JSON.stringify(cipherText)))
 	}
-	static async decrypt(base64: string, password: string) {
-		const ha = await Password.hash(password, 5)
-		const some = JSON.parse(encodeUTF8(decodeBase64(base64))) as SecretPayload
-		const foo = await decrypt(some, password)
-		return foo
+	static async decrypt(text: string, password: string) {
+		const cipherText = JSON.parse(
+			util.encodeUTF8(util.decodeBase64(text))
+		) as SecretPayload
+		return await decrypt(cipherText, password)
 	}
 }
-
