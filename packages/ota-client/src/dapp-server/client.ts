@@ -22,7 +22,6 @@ import { Provider } from "../protocol"
 import { Wallet } from "@coral-xyz/anchor"
 import { deserializeOriginalTransaction } from "@valet/lib"
 import bs58 from "bs58"
-import crypto from "crypto"
 
 export class OtaDappServer {
 	cookieMethods: CookieMethods
@@ -271,8 +270,10 @@ export class OtaDappServer {
 		const payloadString = JSON.stringify(payload)
 
 		// const nonce = nacl.randomBytes(nacl.secretbox.nonceLength)
+		// const nonce = crypto.randomBytes(nacl.secretbox.nonceLength)
 
-		const nonce = crypto.randomBytes(nacl.secretbox.nonceLength)
+		const randomBytesArray = new Uint8Array(nacl.secretbox.nonceLength)
+		const nonce = crypto.getRandomValues(randomBytesArray)
 
 		const encryptedPayload = nacl.secretbox(
 			util.decodeUTF8(payloadString),
