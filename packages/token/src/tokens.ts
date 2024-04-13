@@ -106,7 +106,7 @@ export async function customSplTokenAccounts(
 	publicKey: PublicKey
 ): Promise<CustomSplTokenAccountsResponse> {
 	// @ts-ignore
-	const provider = new AnchorProvider(connection, { publicKey })
+	const provider = new anchor.AnchorProvider(connection, { publicKey }, {})
 	const tokenInterface = new TokenInterface(provider)
 
 	const tokenProgramInterface = tokenInterface.withProgramId(TOKEN_PROGRAM_ID)
