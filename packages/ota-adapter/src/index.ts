@@ -37,7 +37,7 @@ export class ValetOtaWalletAdapter extends BaseSignerWalletAdapter {
 			: WalletReadyState.Loadable
 
 	readonly supportedTransactionVersions?: SupportedTransactionVersions =
-		new Set(["legacy"])
+		new Set(["legacy", 0])
 	/////////////////////////////////////////////
 	// Ota Properties
 	/////////////////////////////////////////////
