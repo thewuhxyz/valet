@@ -6,12 +6,12 @@ pub const SIGNER_SEEDS: &[u8] = b"signer";
 
 #[account]
 pub struct WalletAccount {
-    pub hash: [u8; 32],           
-    pub wallet_delegate: Pubkey,  
-    pub creator: Pubkey,          
+    pub hash: [u8; 32],
+    pub wallet_delegate: Pubkey,
+    pub creator: Pubkey,
     pub account_bump: u8,
     pub signer_bump: u8,
-    pub delegate_transferred: bool
+    pub delegate_transferred: bool,
 }
 
 impl WalletAccount {

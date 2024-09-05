@@ -5,13 +5,13 @@ use crate::WalletAccount;
 #[derive(Accounts)]
 pub struct TransferDelegate<'info> {
     #[account(
-        mut, 
+        mut,
         has_one=wallet_delegate,
-        seeds=[wallet_signer.key().as_ref()], 
+        seeds=[wallet_signer.key().as_ref()],
         bump=wallet_account.account_bump
     )]
     pub wallet_account: Account<'info, WalletAccount>,
-    
+
     #[account(
         seeds=[&wallet_account.hash],
         bump=wallet_account.signer_bump
