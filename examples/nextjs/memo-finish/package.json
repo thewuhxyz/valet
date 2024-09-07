@@ -4,12 +4,13 @@
 	"private": true,
 	"scripts": {
 		"build": "next build",
-		"dev": "next dev --turbo",
+		"dev": "next dev -p 4000 --turbo",
 		"lint": "next lint",
 		"shadcn:add": "pnpx shadcn-ui@latest add",
 		"start": "next start"
 	},
 	"dependencies": {
+		"@coral-xyz/anchor": "^0.29.0",
 		"@radix-ui/react-icons": "^1.3.0",
 		"@radix-ui/react-slot": "^1.0.2",
 		"@solana/spl-memo": "^0.2.5",
@@ -18,10 +19,12 @@
 		"@solana/wallet-adapter-react-ui": "^0.9.35",
 		"@solana/wallet-adapter-wallets": "^0.19.26",
 		"@solana/web3.js": "1.95.3",
-		"@tanstack/react-query": "^5.45.1",
+		"@valet/ota": "workspace:^",
+		"@valet/ota-adapter": "workspace:^",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
 		"next": "14.2.4",
+		"next-auth": "^4.24.7",
 		"next-themes": "^0.3.0",
 		"react": "^18",
 		"react-dom": "^18",
@@ -30,7 +33,6 @@
 		"tailwindcss-animate": "^1.0.7"
 	},
 	"devDependencies": {
-		"@tanstack/react-query-devtools": "^5.49.2",
 		"@types/bn.js": "^5.1.0",
 		"@types/node": "^20",
 		"@types/react": "^18",

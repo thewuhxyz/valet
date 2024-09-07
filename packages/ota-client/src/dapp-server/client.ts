@@ -269,9 +269,6 @@ export class OtaDappServer {
 	encryptPayload(payload: DappPayload) {
 		const payloadString = JSON.stringify(payload)
 
-		// const nonce = nacl.randomBytes(nacl.secretbox.nonceLength)
-		// const nonce = crypto.randomBytes(nacl.secretbox.nonceLength)
-
 		const randomBytesArray = new Uint8Array(nacl.secretbox.nonceLength)
 		const nonce = crypto.getRandomValues(randomBytesArray)
 

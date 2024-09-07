@@ -1,32 +1,29 @@
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Providers, WalletButton } from "@/context"
-import "./globals.css"
-import Link from "next/link"
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Providers, WalletButton } from "@/context";
+import "./globals.css";
+import { getSession } from "@/lib/authOptions";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Memo App",
 	description: "Sign Memo",
-}
+};
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
-	children: React.ReactNode
+	children: React.ReactNode;
 }>) {
+	const session = await getSession();
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<Providers>
+				<Providers session={session}>
 					<main className="mx-auto max-w-6xl p-2 min-h-screen flex flex-col">
 						<header className="mx-auto flex w-full max-w-3xl justify-between py-4 pb-16">
-							<Link href="/">
-								<p className="text-3xl cursor-default">
-									Memo
-								</p>
-							</Link>
+							<p className="text-3xl cursor-default">Memo</p>
 							<WalletButton />
 						</header>
 						{children}
@@ -34,5 +31,5 @@ export default function RootLayout({
 				</Providers>
 			</body>
 		</html>
-	)
+	);
 }
