@@ -33,9 +33,7 @@ pub mod valet_protocol {
         instructions::sign_instruction_multiple_signers(ctx, instruction_data, unique_signers)
     }
 
-    pub fn transfer_delegate(
-        ctx: Context<TransferDelegate>,
-    ) -> Result<()> {
+    pub fn transfer_delegate(ctx: Context<TransferDelegate>) -> Result<()> {
         instructions::transfer_delegate(ctx)
     }
 }

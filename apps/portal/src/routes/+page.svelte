@@ -32,7 +32,7 @@
 		<Separator orientation="vertical" class="bg-primary h-20" />
 		<div class="flex flex-col justify-center w-full items-start space-y-4">
 			<p class="opacity-60 cursor-default border-0 border-b-2 border-primary">Docs</p>
-			<Button variant="secondary">Read the Docs</Button>
+			<Button href="https://valet-docs.thewuh.xyz" variant="secondary">Read the Docs</Button>
 		</div>
 	</div>
 </div>

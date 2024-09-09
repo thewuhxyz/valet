@@ -12,11 +12,7 @@ pub mod demo_program {
         let authority = ctx.accounts.authority.key();
         let bump = ctx.bumps.counter;
 
-        ctx.accounts.counter.init(
-            counter, 
-            authority, 
-            bump
-        );
+        ctx.accounts.counter.init(counter, authority, bump);
         Ok(())
     }
 
@@ -29,25 +25,25 @@ pub mod demo_program {
 #[derive(Accounts)]
 pub struct CreateCounter<'info> {
     #[account(
-        init, 
-        payer=authority, 
+        init,
+        payer=authority,
         space=8+std::mem::size_of::<Counter>(),
         seeds=[COUNTER_SEEDS,authority.key().as_ref()],
-        bump, 
+        bump,
     )]
     pub counter: Account<'info, Counter>,
-    
+
     #[account(mut)]
     pub authority: Signer<'info>,
 
     #[account(address = anchor_lang::system_program::ID)]
-    pub system_program: Program<'info, System>
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
 pub struct IncrementCount<'info> {
     #[account(
-        mut, 
+        mut,
         has_one=authority,
         seeds=[COUNTER_SEEDS,authority.key().as_ref()],
         bump=counter.bump,
@@ -60,25 +56,20 @@ pub struct IncrementCount<'info> {
 
 #[account]
 pub struct Counter {
-    pub pubkey: Pubkey, // 32
+    pub pubkey: Pubkey,    // 32
     pub authority: Pubkey, // 32
-    pub count: u64, // 8,
-    pub bump: u8, // 1
+    pub count: u64,        // 8,
+    pub bump: u8,          // 1
 }
 
 impl Counter {
-    pub fn init(
-        &mut self, 
-        pubkey: Pubkey, 
-        authority: Pubkey, 
-        bump: u8
-    ) {
+    pub fn init(&mut self, pubkey: Pubkey, authority: Pubkey, bump: u8) {
         self.pubkey = pubkey;
         self.authority = authority;
         self.bump = bump;
     }
 
     pub fn increment_count(&mut self) {
-        self.count = self.count + 1;
+        self.count += 1;
     }
 }

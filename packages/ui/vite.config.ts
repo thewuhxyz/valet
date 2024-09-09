@@ -1,14 +1,14 @@
-import { sveltekit } from "@sveltejs/kit/vite"
-import { defineConfig } from "vite"
-import path from "path"
-import { nodePolyfills } from "vite-plugin-node-polyfills"
+import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
+import * as path from "path";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
 	plugins: [
-		sveltekit(),
 		nodePolyfills({
 			protocolImports: true,
 		}),
+		sveltekit(),
 	],
 
 	resolve: {
@@ -16,4 +16,4 @@ export default defineConfig({
 			$lib: path.resolve("./src/lib"),
 		},
 	},
-})
+});

@@ -26,7 +26,7 @@ pub fn sign_instruction_multiple_signers<'info>(
     let mut last_account_index: usize = 0;
 
     for _ in 0..unique_signers {
-        last_account_index = last_account_index + 3;
+        last_account_index += 3;
 
         let accounts = &ctx.remaining_accounts[first_account_index..last_account_index];
 
@@ -56,10 +56,7 @@ pub fn sign_instruction_multiple_signers<'info>(
             "wallet delegate doesn't match"
         );
 
-        assert_eq!(
-            wallet_delegate.is_signer, true,
-            "wallet_delegate is not a signer"
-        );
+        assert!(wallet_delegate.is_signer, "wallet_delegate is not a signer");
 
         let hash_vec = wallet_account.hash.to_vec();
         let bump_vec = vec![wallet_account.signer_bump];

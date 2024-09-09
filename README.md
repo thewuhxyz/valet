@@ -1,4 +1,4 @@
 # Valet
 The first social login wallet on Solana 
 
-Docs coming soon...
+[Read the docs](https://valet-docs.thewuh.xyz)
