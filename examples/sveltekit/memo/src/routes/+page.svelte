@@ -1,7 +1,12 @@
 <script lang="ts">
 	import Button from "$lib/components/ui/button/button.svelte";
 	import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
-	import { clusterApiUrl, Connection, PublicKey, Transaction } from "@solana/web3.js";
+	import {
+		clusterApiUrl,
+		Connection,
+		PublicKey,
+		Transaction,
+	} from "@solana/web3.js";
 	import Connect from "$lib/components/app/Connect.svelte";
 	import { toast } from "svelte-sonner";
 	import { PUBLIC_DAPP_WALLET_PUBLICKEY } from "$env/static/public";
@@ -27,44 +32,32 @@
 				wallet.publicKey,
 			]);
 
-			const connection = new Connection(clusterApiUrl("devnet"), "processed")
+			const connection = new Connection(clusterApiUrl("devnet"), "processed");
 
 			const anchorProvider = new AnchorProvider(connection, wallet, {});
 
+			const { instructions, feePayer } =
+				await OtaTransaction.prepareInstructions(
+					anchorProvider,
+					[memoInstruction],
+					wallet.publicKey,
+					{
+						feePayerIfDelegateNotTransfered: new PublicKey(
+							PUBLIC_DAPP_WALLET_PUBLICKEY
+						),
+					}
+				);
+
 			const transaction = new Transaction();
 
-			transaction.instructions = [memoInstruction];
-			transaction.feePayer = wallet.publicKey;
+			transaction.instructions = instructions;
+			transaction.feePayer = feePayer;
 			transaction.recentBlockhash = (
 				await connection.getLatestBlockhash()
 			).blockhash;
 
-			// prepare OTA transaction
-			const preparedTransaction = await OtaTransaction.prepare(
-				anchorProvider,
-				transaction,
-				{
-					feePayerIfDelegateNotTransfered: new PublicKey(
-						PUBLIC_DAPP_WALLET_PUBLICKEY
-					),
-				}
-			);
-
-			const preparedInstructions = preparedTransaction.instructions.map(
-				(ix) => {
-					return ix.keys.map((meta) => ({
-						...meta,
-						pubkey: meta.pubkey.toBase58(),
-					}));
-				}
-			);
-
-			console.log("inx keys:", preparedInstructions);
-
-			console.log("prep fee payer:", preparedTransaction.feePayer?.toBase58());
-
 			const signedTransaction =
-				await wallet.signTransaction(preparedTransaction);
+				await wallet.signTransaction(transaction);
 
 			const txSig = await connection.sendRawTransaction(
 				signedTransaction.serialize()

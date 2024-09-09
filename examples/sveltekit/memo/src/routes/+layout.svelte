@@ -15,7 +15,7 @@
 	$: userStore.set(user)
 
 	const localStorageKey = "walletAdapter"
-	const network = "http://localhost:8899"
+	const network = clusterApiUrl("devnet")
 
 	const wallets = [
 		new PhantomWalletAdapter(),
